@@ -1,0 +1,25 @@
+# %%
+import os
+import openpyxl
+import pandas as pd
+
+# %%
+carpeta = 'ruta\\archivo'
+archivos_excel = os.listdir(carpeta)
+tabla_madre = pd.DataFrame()
+
+# %%
+for archivo in archivos_excel:
+    if archivo.endswith('.xlsx'):  # Solo considerar los archivos con extensión .xlsx
+        ruta_archivo = os.path.join(carpeta, archivo)
+        
+        # Leer el libro de Excel y seleccionar la página con los datos deseados
+        datos = pd.read_excel(ruta_archivo, sheet_name='Nombre pagina')
+        
+        # Aplicar el filtro a los datos 
+        datos_filtrados = datos[datos['columna'] == 'filtro que aplicare']
+        
+        # Agregar los datos filtrados 
+        tabla_madre = pd.concat([tabla_madre, datos_filtrados], ignore_index=True)
+        
+tabla_madre.to_excel('tabla_madre.xlsx', index=False)
